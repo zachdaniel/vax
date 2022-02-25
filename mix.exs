@@ -8,6 +8,7 @@ defmodule Vax.MixProject do
       elixir: "~> 1.7",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
+      elixirc_paths: elixirc_paths(Mix.env),
       package: package()
     ] ++ docs()
   end
@@ -22,8 +23,10 @@ defmodule Vax.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      # {:dep_from_hexpm, "~> 0.3.0"},
-      # {:dep_from_git, git: "https://github.com/elixir-lang/my_dep.git", tag: "0.1.0"}
+      {:antidote_pb_codec, git: "https://github.com/vaxine-io/antidote_pb_codec.git", override: true},
+      {:antidotec_pb, git: "https://github.com/vaxine-io/antidote-erlang-client.git"},
+      {:ecto, "~> 3.0"},
+      {:ex_doc, ">= 0.0.0", only: :dev, runtime: false}
     ]
   end
 
@@ -35,6 +38,10 @@ defmodule Vax.MixProject do
       homepage_url: "https://vaxine.io"
     ]
   end
+
+  # Ensures `test/**/*.ex` files are read during tests.
+  defp elixirc_paths(:test), do: ["lib", "test/ecto"]
+  defp elixirc_paths(_), do: ["lib"]
 
   defp package do
     [
